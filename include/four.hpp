@@ -5,7 +5,12 @@
 #include <utility>
 #include <vector>
 
-typedef std::pair<int, bool> square;
+
+struct square{
+    int value;
+    bool marked;
+};
+
 typedef std::array<std::array<square, 5>, 5> Board;
 
 class Four{

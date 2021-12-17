@@ -12,7 +12,15 @@ int main(int argc, char** argv){
     // Six("data/six.txt");
     // Seven("data/seven.txt");
     // Eight("data/eight.txt");
-    Nine("data/nine.txt");
+    // Nine("data/nine.txt");
+    // Ten("data/ten.txt");
+    // Eleven("data/eleven.txt");
+    // Twelve("data/twelve.txt");
+    // Thirteen("data/thirteen.txt");
+    // Fourteen("data/fourteen.txt");
+    // Fifteen("data/fifteen.txt");
+    Sixteen("data/sixteen.txt");
 
+    std::cout << "done." << std::endl;
     return 0;
 }

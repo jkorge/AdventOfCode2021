@@ -1,14 +1,28 @@
 #include "five.hpp"
 #include "table.hpp"
+#include "tempus.hpp"
 
-typedef table<1, 20, true> tbl;
+typedef table<2, 20, true> tbl;
+typedef header<48> hdr;
 
 Five::Five(const std::string& filename) : fin(filename) {
     this->load();
-    tbl::header("Day Five");
-    tbl::row(this->part_one());
-    tbl::row(this->part_two());
+    hdr::print("Day Five");
+    tbl::header("Result", "Time");
+
+    uint64_t t0 = Tempus::time();
+    int x = this->part_one();
+    uint64_t t1 = Tempus::time();
+    tbl::row(x, Tempus::strtime(t1-t0));
+
+    t0 = Tempus::time();
+    x = this->part_two();
+    t1 = Tempus::time();
+    tbl::row(x, Tempus::strtime(t1-t0));
+
     tbl::sep();
+    std::cout << std::endl;
+
     this->fin.close();
 }
 
@@ -16,6 +30,7 @@ void Five::load(){
     coord ep1, ep2;
     char dmp[4];
     std::string line;
+    int xlim = -1, ylim = -1;
 
     while(!fin.eof()){
         // read line
@@ -35,68 +50,67 @@ void Five::load(){
         str.get();
         str >> ep2.y;
 
+        xlim = std::max(std::max(ep1.x, ep2.x), xlim);
+        ylim = std::max(std::max(ep1.y, ep2.y), ylim);
         this->endpoints.emplace_back(ep1, ep2);
     }
-
-
+    this->xlim = xlim+1;
+    this->ylim = ylim+1;
 }
 
 int Five::part_one(){
-    std::unordered_map<coord, int, CoordHash> counts;
 
-    for(std::vector<std::pair<coord, coord> >::const_iterator it=this->endpoints.cbegin(); it!=this->endpoints.cend(); ++it){
-        // Only consider horizontal/vertical lines
-        bool horizontal = it->first.y == it->second.y,
-             vertical = it->first.x == it->second.x;
-        if(!horizontal && !vertical){ continue; }
+    std::vector<std::vector<uint8_t> > counts(this->xlim, std::vector<uint8_t>(this->ylim, 0));
 
-        bool increasing = horizontal ? it->first.x < it->second.x : it->first.y < it->second.y;
-        for(coord c=it->first;
-            horizontal ? (increasing ? c.x <= it->second.x : c.x >= it->second.x)
-                       : (increasing ? c.y <= it->second.y : c.y >= it->second.y);
-            horizontal ? (increasing ? ++c.x : --c.x)
-                       : (increasing ? ++c.y : --c.y)
-        ){
-            ++counts[c];
+    for(std::vector<std::pair<coord, coord> >::iterator it=this->endpoints.begin(); it!=this->endpoints.end(); ++it){
+        if(it->first.y == it->second.y){
+            for(int x=std::min(it->first.x, it->second.x); x<=std::max(it->first.x, it->second.x); ++x){ ++counts[x][it->first.y]; }
+        }
+        else
+        if(it->first.x == it->second.x){
+            for(int y=std::min(it->first.y, it->second.y); y<=std::max(it->first.y, it->second.y); ++y){ ++counts[it->first.x][y]; }
+        }
+        else{ continue; }
+    }
+    int res = 0;
+    for(std::vector<std::vector<uint8_t> >::iterator xit=counts.begin(); xit!=counts.end(); ++xit){
+        for(std::vector<uint8_t>::iterator yit=xit->begin(); yit!=xit->end(); ++yit){
+            if(*yit >=2){ ++res; }
         }
     }
-
-    int res = 0;
-    for(std::unordered_map<coord, int>::iterator it=counts.begin(); it!=counts.end(); ++it){ if(it->second >= 2){ ++res; } }
     return res;
 }
 
 int Five::part_two(){
-    std::unordered_map<coord, int, CoordHash> counts;
 
-    for(std::vector<std::pair<coord, coord> >::const_iterator it=this->endpoints.cbegin(); it!=this->endpoints.cend(); ++it){
-        bool horizontal = it->first.y == it->second.y,
-             vertical = it->first.x == it->second.x,
-             incx = it->first.x < it->second.x,
-             incy = it->first.y < it->second.y;
+    std::vector<std::vector<uint8_t> > counts(this->xlim, std::vector<uint8_t>(this->ylim, 0));
 
-        coord c = it->first;
-        while(true){
-            ++counts[c];
+    for(std::vector<std::pair<coord, coord> >::iterator it=this->endpoints.begin(); it!=this->endpoints.end(); ++it){
+        if(it->first.y == it->second.y){
+            for(int x=std::min(it->first.x, it->second.x); x<=std::max(it->first.x, it->second.x); ++x){ ++counts[x][it->first.y]; }
+        }
+        else
+        if(it->first.x == it->second.x){
+            for(int y=std::min(it->first.y, it->second.y); y<=std::max(it->first.y, it->second.y); ++y){ ++counts[it->first.x][y]; }
+        }
+        else{
+            bool incx = it->first.x < it->second.x,
+                 incy = it->first.y < it->second.y;
 
-            if(horizontal){
-                incx ? ++c.x : --c.x;
-                if(incx ? c.x > it->second.x : c.x < it->second.x){ break; }
-            }
+            if( incx &&  incy){ for(int x=it->first.x, y=it->first.y; x<=it->second.x && y<=it->second.y; ++x, ++y){ ++counts[x][y]; } }
             else
-            if(vertical){
-                incy ? ++c.y : --c.y;
-                if(incy ? c.y > it->second.y : c.y < it->second.y){ break; }
-            }
-            else{
-                incx ? ++c.x : --c.x;
-                incy ? ++c.y : --c.y;
-                if((incx ? c.x > it->second.x : c.x < it->second.x) || (incy ? c.y > it->second.y : c.y < it->second.y)){ break; }
-            }
+            if( incx && !incy){ for(int x=it->first.x, y=it->first.y; x<=it->second.x && y>=it->second.y; ++x, --y){ ++counts[x][y]; } }
+            else
+            if(!incx &&  incy){ for(int x=it->first.x, y=it->first.y; x>=it->second.x && y<=it->second.y; --x, ++y){ ++counts[x][y]; } }
+            else
+            if(!incx && !incy){ for(int x=it->first.x, y=it->first.y; x>=it->second.x && y>=it->second.y; --x, --y){ ++counts[x][y]; } }
         }
     }
-
     int res = 0;
-    for(std::unordered_map<coord, int>::iterator it=counts.begin(); it!=counts.end(); ++it){ if(it->second >= 2){ ++res; } }
+    for(std::vector<std::vector<uint8_t> >::iterator xit=counts.begin(); xit!=counts.end(); ++xit){
+        for(std::vector<uint8_t>::iterator yit=xit->begin(); yit!=xit->end(); ++yit){
+            if(*yit >=2){ ++res; }
+        }
+    }
     return res;
 }

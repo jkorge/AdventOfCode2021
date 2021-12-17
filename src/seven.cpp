@@ -1,14 +1,28 @@
 #include "seven.hpp"
 #include "table.hpp"
+#include "tempus.hpp"
 
-typedef table<1, 20, true> tbl;
+typedef table<2, 20, true> tbl;
+typedef header<48> hdr;
 
 Seven::Seven(const std::string& filename) : fin(filename) {
     this->load();
-    tbl::header("Day Seven");
-    tbl::row(this->part_one());
-    tbl::row(this->part_two());
+    hdr::print("Day Seven");
+    tbl::header("Result", "Time");
+
+    uint64_t t0 = Tempus::time();
+    int x = this->part_one();
+    uint64_t t1 = Tempus::time();
+    tbl::row(x, Tempus::strtime(t1-t0));
+
+    t0 = Tempus::time();
+    x = this->part_two();
+    t1 = Tempus::time();
+    tbl::row(x, Tempus::strtime(t1-t0));
+
     tbl::sep();
+    std::cout << std::endl;
+
     this->fin.close();
 }
 

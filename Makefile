@@ -7,12 +7,12 @@ MAIN = ./main.cpp
 
 
 LIB = $(LIBDIR)/libaoc.a
-EXE = $(BINDIR)/aoc
+EXE = $(BINDIR)/aoc.exe
 SOURCES = $(wildcard $(SRCDIR)/*.cpp)
 OBJS = $(SOURCES:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
 
 CXX = g++
-CXXFLAGS = -std=c++17 -Iinclude -O3
+CXXFLAGS = -std=c++17 -Iinclude -O3 -Winline
 LDFLAGS = -Llib -laoc
 
 $(OBJDIR):
@@ -30,13 +30,13 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.cpp $(INCDIR)/%.hpp | $(OBJDIR)
 $(LIB): $(OBJS) | $(LIBDIR)
 	ar crs $(LIB) $(OBJS)
 
-$(EXE): $(LIB) | $(BINDIR)
+$(EXE): $(LIB) $(MAIN) | $(BINDIR)
 	$(CXX) $(CXXFLAGS) -o $(EXE) $(MAIN) $(LDFLAGS)
 
 clean:
-	-rm -f obj/*
-	-rm -f bin/*
-	-rm -f lib/*
+	-del /q obj\*
+	-del /q bin\*
+	-del /q lib\*
 
 all: $(EXE)
 
