@@ -3,6 +3,7 @@
 int main(int argc, char** argv){
 
     std::cout.imbue(std::locale(std::cout.getloc(), new comma_sep));
+    std::cout << std::boolalpha;
 
     // One("data/one.txt");
     // Two("data/two.txt");
@@ -19,7 +20,8 @@ int main(int argc, char** argv){
     // Thirteen("data/thirteen.txt");
     // Fourteen("data/fourteen.txt");
     // Fifteen("data/fifteen.txt");
-    Sixteen("data/sixteen.txt");
+    // Sixteen("data/sixteen.txt");
+    Seventeen("data/seventeen.txt");
 
     std::cout << "done." << std::endl;
     return 0;
