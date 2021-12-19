@@ -21,7 +21,8 @@ int main(int argc, char** argv){
     // Fourteen("data/fourteen.txt");
     // Fifteen("data/fifteen.txt");
     // Sixteen("data/sixteen.txt");
-    Seventeen("data/seventeen.txt");
+    // Seventeen("data/seventeen.txt");
+    Eighteen("data/eighteen.txt");
 
     std::cout << "done." << std::endl;
     return 0;
