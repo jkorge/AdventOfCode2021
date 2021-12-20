@@ -231,6 +231,7 @@ int Eighteen::part_two(){
             Node* n = this->add(a, b);
             this->reduce(n);
             res = std::max(res, this->magnitude(n));
+            delete a, b, n;
         }
     }
 

@@ -18,3 +18,5 @@
 #include "sixteen.hpp"
 #include "seventeen.hpp"
 #include "eighteen.hpp"
+#include "nineteen.hpp"
+#include "twenty.hpp"
