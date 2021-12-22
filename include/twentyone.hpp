@@ -7,13 +7,16 @@
 #include <vector>
 
 class TwentyOne{
+public:
+    typedef std::tuple<uint8_t, uint8_t, uint8_t, uint8_t> state;
 
+private:
     std::ifstream fin;
     int p1start, p2start;
 
     void load();
-    int deterministic();
-    std::array<uint64_t, 2> quantum(uint8_t, uint8_t, uint8_t, uint8_t);
+    std::array<int, 3> deterministic(std::array<int, 2>);
+    std::array<uint64_t, 2> quantum(state);
 
 public:
     TwentyOne(const std::string&);

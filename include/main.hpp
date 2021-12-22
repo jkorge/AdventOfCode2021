@@ -21,3 +21,4 @@
 #include "nineteen.hpp"
 #include "twenty.hpp"
 #include "twentyone.hpp"
+#include "twentytwo.hpp"

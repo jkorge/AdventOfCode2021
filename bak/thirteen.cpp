@@ -2,8 +2,8 @@
 #include "table.hpp"
 #include "tempus.hpp"
 
-typedef table<2, 30, true> tbl;
-typedef header<68> hdr;
+typedef table<2, 20, true> tbl;
+typedef header<48> hdr;
 
 Thirteen::Thirteen(const std::string& filename) : fin(filename) {
     this->load();
