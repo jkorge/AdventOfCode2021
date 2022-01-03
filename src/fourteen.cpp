@@ -2,8 +2,8 @@
 #include "table.hpp"
 #include "tempus.hpp"
 
-typedef table<2, 30, true> tbl;
-typedef header<68> hdr;
+typedef table<2, 35, true> tbl;
+typedef header<78> hdr;
 
 Fourteen::Fourteen(const std::string& filename) : fin(filename) {
     this->load();
@@ -25,6 +25,8 @@ Fourteen::Fourteen(const std::string& filename) : fin(filename) {
 
     this->fin.close();
 }
+
+Fourteen::~Fourteen() = default;
 
 void Fourteen::load(){
     std::string x;

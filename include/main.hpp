@@ -22,3 +22,6 @@
 #include "twenty.hpp"
 #include "twentyone.hpp"
 #include "twentytwo.hpp"
+#include "twentythree.hpp"
+#include "twentyfour.hpp"
+#include "twentyfive.hpp"

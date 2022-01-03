@@ -34,6 +34,6 @@ public:
     ~Thirteen();
 
     int part_one();
-    int part_two();
+    std::string part_two();
 };
 

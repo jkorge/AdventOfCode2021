@@ -2,8 +2,8 @@
 #include "table.hpp"
 #include "tempus.hpp"
 
-typedef table<2, 30, true> tbl;
-typedef header<68> hdr;
+typedef table<2, 35, true> tbl;
+typedef header<78> hdr;
 
 Fifteen::Fifteen(const std::string& filename) : fin(filename) {
     this->load();
@@ -47,11 +47,11 @@ int dijkstra(const std::vector<std::vector<uint8_t> >& grid){
     std::vector<std::vector<int> > distances(X, std::vector<int>(Y, INT_MAX));
     distances[0][0] = 0;
 
-    int p = (X*Y / 10);
+    int p = (X*Y / 100);
 
     for(int n=0; n<X*Y; ++n){
 
-        if(!(n%p)){ std::cout << (10*n/p) << "%\r"; }
+        if(!(n%p)){ std::cout << (n/p) << "%\r"; }
 
         // Find unvisited node with min distance
         int x, y, min = INT_MAX;

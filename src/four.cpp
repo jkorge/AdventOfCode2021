@@ -2,8 +2,8 @@
 #include "table.hpp"
 #include "tempus.hpp"
 
-typedef table<2, 30, true> tbl;
-typedef header<68> hdr;
+typedef table<2, 35, true> tbl;
+typedef header<78> hdr;
 
 bool check_rows(const Board& b){
 

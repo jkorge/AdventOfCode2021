@@ -2,8 +2,8 @@
 #include "table.hpp"
 #include "tempus.hpp"
 
-typedef table<2, 30, true> tbl;
-typedef header<68> hdr;
+typedef table<2, 35, true> tbl;
+typedef header<78> hdr;
 
 Thirteen::Thirteen(const std::string& filename) : fin(filename) {
     this->load();
@@ -16,9 +16,9 @@ Thirteen::Thirteen(const std::string& filename) : fin(filename) {
     tbl::row(x, Tempus::strtime(t1-t0));
 
     t0 = Tempus::time();
-    x = this->part_two();
+    std::string y = this->part_two();
     t1 = Tempus::time();
-    tbl::row(x, Tempus::strtime(t1-t0));
+    tbl::row(y, Tempus::strtime(t1-t0));
 
     tbl::sep();
     std::cout << std::endl;
@@ -105,7 +105,7 @@ int Thirteen::part_one(){
     return res;
 }
 
-int Thirteen::part_two(){
+std::string Thirteen::part_two(){
     std::vector<coord> new_coords = this->ins.coords;
 
     for(int i=0; i<this->ins.folds.size(); ++i){
@@ -126,11 +126,14 @@ int Thirteen::part_two(){
         folded_paper[new_coords[i].y][new_coords[i].x] = true;
     }
 
-    for(int i=0; i<folded_paper.size(); ++i){
+    std::string res = "\n";
+    int N = folded_paper.size();
+    for(int i=0; i<N; ++i){
         for(int j=0; j<folded_paper[i].size(); ++j){
-            std::cout << (folded_paper[i][j] ? '#' : '.');
+            res += (folded_paper[i][j] ? '#' : ' ');
         }
-        std::cout << '\n';
+        if(i <N-1){ res += '\n'; }
+        else      { res += "  "; }
     }
-    return -1;
+    return res;
 }

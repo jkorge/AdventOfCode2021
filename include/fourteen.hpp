@@ -19,6 +19,7 @@ class Fourteen{
 
 public:
     Fourteen(const std::string&);
+    ~Fourteen();
 
     int part_one();
     uint64_t part_two();
